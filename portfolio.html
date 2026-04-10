@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agliati Lorenzo | Portfolio</title>
+    <style>
+        /* --- Stili Base e Reset --- */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: auto; /* Gestito da JS per evitare conflitti */
+        }
+        a { color: #00bcd4; text-decoration: none; transition: 0.3s; }
+        
+        h1, h2, h3 { color: #ffffff; margin-bottom: 15px; }
+        
+        /* Titoli Sezione */
+        .section-title { 
+            border-left: 4px solid #00bcd4; 
+            padding-left: 10px; 
+            margin-bottom: 40px; 
+            font-size: 2.2rem; 
+        }
+        
+        /* --- Navigazione Stile Pillola Fluttuante con Bolla Elastica --- */
+        nav {
+            position: fixed; 
+            top: 25px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            background-color: rgba(30, 30, 30, 0.65); 
+            padding: 10px 15px; 
+            z-index: 1000;
+            border-radius: 50px; 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            backdrop-filter: blur(12px); 
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); 
+            display: flex;
+            gap: 10px; 
+            width: max-content; 
+        }
+        nav a { 
+            position: relative;
+            z-index: 1;
+            padding: 8px 18px;
+            font-weight: 700; 
+            font-size: 0.95rem; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            color: #cccccc;
+            transition: color 0.3s;
+        }
+        nav a.active { color: #121212; } 
+        nav a:hover:not(.active) { color: #ffffff; }
+        
+        /* La Bolla Animata */
+        .nav-indicator {
+            position: absolute;
+            background: #00bcd4;
+            border-radius: 30px;
+            z-index: 0; 
+            pointer-events: none;
+            box-shadow: 0 4px 15px rgba(0, 188, 212, 0.4);
+        }
+
+        /* --- Hero Section (Nome e Immagine Pop-Out) --- */
+        header {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 20px 40px;
+            background: radial-gradient(circle at right, #1a1a1a, #121212);
+        }
+        
+        .hero-container {
+            display: flex; align-items: center; justify-content: space-between;
+            max-width: 1200px; width: 100%; gap: 40px;
+        }
+
+        .hero-text { flex: 1; min-width: 300px; }
+        .hero-text h1 { font-size: 4.5rem; color: #ffffff; margin-bottom: 5px; line-height: 1.1; letter-spacing: -1px; }
+        .hero-text h2 { font-size: 1.8rem; color: #00bcd4; margin-bottom: 25px; font-weight: 400; }
+        .hero-text p { font-size: 1.2rem; margin-bottom: 30px; max-width: 500px; color: #bbb; }
+        
+        .btn {
+            background-color: #00bcd4; color: #121212; padding: 12px 30px;
+            font-size: 1.2rem; font-weight: bold; border-radius: 5px; display: inline-block;
+        }
+        .btn:hover { background-color: #ffffff; color: #121212; }
+
+        .hero-visual { flex: 1; display: flex; justify-content: center; align-items: center; min-width: 300px; position: relative; }
+        
+        .image-backdrop {
+            position: relative; width: 380px; height: 480px;
+            background: linear-gradient(135deg, #00bcd4, #004b56);
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            display: flex; align-items: flex-end; justify-content: center;
+            box-shadow: 0 20px 50px rgba(0, 188, 212, 0.2);
+            transition: all 0.5s ease;
+        }
+        .image-backdrop:hover { border-radius: 60% 40% 30% 70% / 50% 50% 60% 50%; }
+        .image-backdrop img {
+            position: absolute; bottom: 0; width: 115%; max-height: 125%;
+            object-fit: contain; filter: drop-shadow(0px 15px 25px rgba(0,0,0,0.6));
+            transform: translateY(-20px); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 10;
+        }
+        .image-backdrop:hover img { transform: translateY(-35px) scale(1.03); }
+
+        /* --- Contenitore e Sezioni --- */
+        .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+        section { padding: 80px 0; border-bottom: 1px solid #2a2a2a; }
+
+        /* --- Sezione Chi Sono (Layout Diviso) --- */
+        .about-container { display: flex; gap: 50px; align-items: center; }
+        .about-text { flex: 1; font-size: 1.1rem; color: #ccc; }
+        .about-highlights {
+            flex: 1; display: flex; flex-direction: column; gap: 30px;
+            padding-left: 30px; border-left: 1px solid #333;
+        }
+        .highlight-item {
+            display: block; cursor: pointer; text-decoration: none;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .highlight-item span {
+            display: block; font-size: 0.85rem; color: #00bcd4;
+            text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 5px;
+        }
+        .highlight-item h3 {
+            font-size: 2.2rem; margin: 0; color: #ffffff; line-height: 1.1; transition: color 0.3s;
+        }
+        .highlight-item:hover { transform: translateX(10px); }
+        .highlight-item:hover h3 { color: #00bcd4; }
+
+        @keyframes highlightGlow {
+            0% { box-shadow: 0 0 0 0 rgba(0, 188, 212, 0); border-color: #333; }
+            20% { box-shadow: 0 0 40px rgba(0, 188, 212, 0.6), inset 0 0 15px rgba(0, 188, 212, 0.2); border-color: #00bcd4; }
+            80% { box-shadow: 0 0 40px rgba(0, 188, 212, 0.6), inset 0 0 15px rgba(0, 188, 212, 0.2); border-color: #00bcd4; }
+            100% { box-shadow: 0 0 0 0 rgba(0, 188, 212, 0); border-color: #333; }
+        }
+        .glow-effect {
+            animation: highlightGlow 2s ease-out;
+            border-color: #00bcd4 !important;
+        }
+
+        /* Griglie Generiche */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { background-color: #1e1e1e; padding: 25px; border-radius: 8px; border: 1px solid #333; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; }
+        .card:hover { transform: translateY(-5px); border-color: #00bcd4; }
+        .card h3 { color: #00bcd4; margin-bottom: 5px; font-size: 1.3rem; }
+        .card h4 { color: #aaaaaa; font-weight: 500; font-size: 1rem; margin-bottom: 15px; }
+        .date-badge { display: inline-block; background-color: #333; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; margin-bottom: 15px; color: #bbb; }
+
+        /* --- Intestazione Logo --- */
+        .entity-header { display: flex; align-items: center; margin-bottom: 15px; }
+        .entity-logo {
+            width: 48px; height: 48px; border-radius: 50%; margin-right: 15px;
+            border: 2px solid #333; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            object-fit: cover;
+        }
+        .entity-info { flex: 1; }
+        .entity-info h3, .entity-info h4 { margin-bottom: 0; }
+        .entity-info h4 { font-size: 0.95rem; margin-top: 2px; }
+
+        /* --- TIMELINE ANIMATA E GERARCHICA --- */
+        .timeline { position: relative; max-width: 800px; margin: 0 auto; z-index: 1; }
+        .timeline::before {
+            content: ''; position: absolute; left: 15px; transform: translateX(-50%);
+            top: 15px; bottom: 0; width: 2px; background-color: #3a3a3a; z-index: -1;
+        }
+        .timeline-block { position: relative; padding-left: 55px; margin-bottom: 60px; }
+        .timeline-dot {
+            position: absolute; left: 15px; transform: translateX(-50%); top: 5px;
+            width: 20px; height: 20px; border-radius: 50%; border: 4px solid #121212; z-index: 2;
+        }
+        .timeline-dot.completed { background-color: #4caf50; }
+        .timeline-dot.future { background-color: #666; width: 14px; height: 14px; border-width: 3px; top: 8px; } 
+        .timeline-dot.current { background-color: #00bcd4; animation: ripple 1.5s linear infinite; } 
+
+        @keyframes ripple {
+            0% { box-shadow: 0 0 0 0 rgba(0, 188, 212, 0.5); }
+            80% { box-shadow: 0 0 0 15px rgba(0, 188, 212, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 188, 212, 0); }
+        }
+
+        .timeline-date-outside { display: block; color: #ffffff; font-size: 1.1rem; font-weight: bold; margin-bottom: 10px; letter-spacing: 0.5px; }
+        
+        .timeline-content { 
+            background-color: #1e1e1e; padding: 25px; border-radius: 8px; 
+            border: 1px solid #333; transition: all 0.3s ease; 
+        }
+        .grade { color: #2a2a2a; font-size: 0.85rem; margin-top: 15px; text-align: right; }
+
+        /* Animazioni allo Scroll */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        footer { text-align: center; padding: 30px; background-color: #0a0a0a; border-top: 1px solid #333; }
+
+        /* Responsive Mobile Base */
+        @media (max-width: 850px) {
+            .hero-container { flex-direction: column-reverse; text-align: center; padding-top: 50px; }
+            .hero-text { padding-right: 0; }
+            .hero-text p { margin: 0 auto 30px; }
+            .image-backdrop { width: 300px; height: 380px; }
+            nav { width: 95%; overflow-x: auto; justify-content: flex-start; padding: 10px; }
+            .about-container { flex-direction: column; gap: 30px; text-align: center; }
+            .about-highlights { padding-left: 0; border-left: none; border-top: 1px solid #333; padding-top: 30px; }
+        }
+		
+		/* --- Testo Espandi (Leggi di più) --- */
+		.expand-text-btn {
+			color: #888888;
+			font-size: 0.85rem;
+			cursor: pointer;
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			margin-top: 10px;
+			transition: color 0.3s;
+		}
+		.expand-text-btn:hover { color: #cccccc; }
+		.expand-text-btn .arrow {
+			display: inline-block;
+			transition: transform 0.3s ease;
+			font-size: 0.65rem;
+		}
+		.expand-text-btn.active .arrow {
+			transform: rotate(180deg);
+		}
+		
+		/* --- Contenuto Espandibile --- */
+		.expandable-content {
+			max-height: 0;
+			overflow: hidden;
+			transition: max-height 0.5s cubic-bezier(0, 1, 0, 1), opacity 0.5s ease-out, margin-top 0.3s ease-out;
+			opacity: 0;
+			margin-top: 0;
+		}
+		.expandable-content.expanded {
+			max-height: 1000px;
+			transition: max-height 1s ease-in-out, opacity 0.5s ease-in, margin-top 0.3s ease-in;
+			opacity: 1;
+			margin-top: 15px;
+		}
+
+		/* Voto spostato a sinistra */
+		.grade.left-aligned { text-align: left; }
+
+		/* --- Badges Competenze (Cerchietti Sovrapposti Timeline) --- */
+		.badges-container {
+			position: absolute;
+			bottom: 15px;
+			right: 30px; 
+			display: flex;
+			flex-direction: row-reverse; 
+			align-items: center;
+		}
+		.badge-link {
+			display: block;
+			width: 35px;
+			height: 35px;
+			border-radius: 50%;
+			background-color: #2a2a2a;
+			border: 1px solid #1e1e1e;
+			margin-right: -15px; 
+			position: relative;
+			transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+			text-decoration: none;
+			z-index: 1;
+		}
+		.badge-link img {
+			width: 100%; height: 100%; object-fit: contain; 
+			border-radius: 50%; padding: 4px; 
+		}
+
+		.badges-container:hover .badge-link { margin-right: 8px; }
+		.badges-container:hover .badge-link:hover {
+			transform: translateY(-8px) scale(1.2);
+			z-index: 10;
+			border-color: #00bcd4;
+		}
+		/* Scritta "Competenze" sotto i cerchietti, bianca, centrata e con bagliore centrale */
+		.badges-container::before {
+			content: 'Competenze';
+			position: absolute;
+			left: 50%; 
+			bottom: -35px; /* Spostato più in basso */
+			font-size: 0.75rem;
+			color: #ffffff; 
+			text-transform: uppercase;
+			letter-spacing: 1px;
+			font-weight: 600;
+			opacity: 0;
+			transform: translateX(-50%) translateY(-5px);
+			transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+			pointer-events: none;
+			white-space: nowrap;
+			
+			/* Nuovo: Bagliore diffuso solo al centro */
+			padding: 10px 30px; /* Diamo un po' di spazio invisibile per far sfumare la luce */
+			background: radial-gradient(ellipse at center, rgba(0, 188, 212, 0.4) 0%, rgba(0, 188, 212, 0) 65%);
+			z-index: 0;
+		}
+		/* Mostra la scritta quando il contenitore è in hover (espanso) */
+		.badges-container:hover::before {
+			opacity: 1;
+			transform: translateX(-50%) translateY(0);
+		}
+
+		/* Tooltip con il nome della competenza (singolo cerchietto) */
+		.badge-link::after {
+			content: attr(data-skill);
+			position: absolute; bottom: 45px; left: 50%;
+			transform: translateX(-50%) translateY(10px);
+			
+			/* --- Nuvola scura sfumata (niente bordi o quadrati netti) --- */
+			background: radial-gradient(ellipse at center, rgba(18, 18, 18, 1) 20%, rgba(18, 18, 18, 0.7) 55%, transparent 80%);
+			padding: 10px 25px; /* Spazio largo per far sfumare dolcemente l'ombra verso l'esterno */
+			border: none;
+			border-radius: 0;
+			box-shadow: none;
+			z-index: 20;
+			
+			color: #ffffff; 
+			text-shadow: 0 1px 3px rgba(0,0,0,0.8); /* Un pizzico di contrasto extra sul testo */
+			font-size: 0.85rem; font-weight: bold; white-space: nowrap;
+			opacity: 0; pointer-events: none; transition: all 0.3s;
+		}
+		.badge-link:hover::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+		.badge-link:hover::before {
+			content: ''; position: absolute; top: -20px; bottom: -20px;
+			left: -20px; right: -20px; background: transparent; z-index: -1;
+		}
+
+        /* --- NUOVA SEZIONE: COMPETENZE & CERTIFICAZIONI COMBINATE --- */
+        .skills-cert-container {
+            display: grid;
+            grid-template-columns: 3fr 2fr; /* Colonna sinistra più larga per le competenze */
+            gap: 40px;
+            align-items: start;
+        }
+
+        .skills-column h3, .cert-column h3 {
+            color: #ffffff;
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+		/* Griglia Competenze */
+		.skills-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+			gap: 15px;
+		}
+		.skill-card {
+			background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px;
+			padding: 15px; text-align: center; position: relative; overflow: hidden;
+			aspect-ratio: 1; 
+			display: flex; flex-direction: column; align-items: center; justify-content: center;
+			transition: transform 0.3s, border-color 0.3s;
+			cursor: pointer;
+		}
+		.skill-card:hover { transform: translateY(-5px); border-color: #00bcd4; }
+		/* --- Logo e Nome nella Griglia --- */
+		.skill-logo {
+			width: 50px;
+			height: 50px;
+			object-fit: contain;
+			margin-bottom: 10px;
+			transition: opacity 0.3s;
+			
+			/* AGGIUNGI QUESTA RIGA: Bagliore mini ciano per loghi trasparenti */
+			filter: drop-shadow(0 0 6px rgba(0, 188, 212, 0.35));
+		}
+		.skill-name { color: #e0e0e0; font-weight: 600; font-size: 0.9rem; transition: opacity 0.3s; }
+
+		/* Dettagli visibili all'hover */
+		.skill-details {
+			position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+			background: rgba(18, 18, 18, 0.95);
+			padding: 15px; display: flex; flex-direction: column;
+			justify-content: center; align-items: center;
+			opacity: 0; transform: translateY(20px);
+			transition: all 0.3s ease; backdrop-filter: blur(3px);
+		}
+		.skill-card:hover .skill-details { opacity: 1; transform: translateY(0); }
+		.skill-card:hover .skill-logo, .skill-card:hover .skill-name { opacity: 0.1; }
+		.skill-details h4 { color: #00bcd4; font-size: 0.85rem; margin-bottom: 5px; text-align: center; }
+		.skill-details p { font-size: 0.75rem; color: #ccc; margin: 0; line-height: 1.3; text-align: center; }
+
+        /* --- Certificazioni Verticali Sovrapposte (Nuovo Stack Effect) --- */
+        .cert-vertical-stack {
+            display: flex;
+            flex-direction: column;
+            padding: 10px 10px 60px 0;
+        }
+        
+        .cert-card-vertical {
+            background-color: #1e1e1e; 
+            border: 1px solid #333; 
+            border-left: 4px solid #00bcd4;
+            border-radius: 12px; 
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-start;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative;
+            cursor: pointer;
+            margin-top: -70px; /* Crea la sovrapposizione verticale */
+            box-shadow: 0 -10px 25px rgba(0,0,0,0.7); /* Ombra verso l'alto per staccare i livelli */
+        }
+        
+        .cert-card-vertical:first-child { 
+            margin-top: 0; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
+        }
+
+        /* Gestione Livelli Z-Index */
+        .cert-card-vertical:nth-child(1) { z-index: 1; }
+        .cert-card-vertical:nth-child(2) { z-index: 2; }
+        .cert-card-vertical:nth-child(3) { z-index: 3; }
+        .cert-card-vertical:nth-child(4) { z-index: 4; }
+
+        /* Espansione parziale quando il mouse è sulla colonna */
+        .cert-vertical-stack:hover .cert-card-vertical { 
+            margin-top: -30px; 
+        }
+        
+        /* Effetto Pop-out sulla singola carta */
+        .cert-card-vertical:hover {
+            transform: translateX(-15px) scale(1.05) rotate(-1deg);
+            z-index: 10 !important;
+            margin-top: 10px !important; 
+            margin-bottom: 50px !important;
+            box-shadow: 15px 15px 40px rgba(0, 188, 212, 0.25);
+            border-left-color: #00bcd4;
+        }
+
+        /* Fix Anti-Vibrazione: espande l'area cliccabile invisibile */
+        .cert-card-vertical:hover::after {
+            content: ''; position: absolute; top: -40px; bottom: -40px;
+            left: -40px; right: -40px; background: transparent; z-index: -1;
+        }
+
+        /* Responsive Mobile per Competenze e Certificazioni */
+        @media (max-width: 850px) {
+            .skills-cert-container {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+            /* Disattiva la sovrapposizione su schermi piccoli per comodità */
+            .cert-card-vertical { margin-top: 0 !important; margin-bottom: 15px !important; box-shadow: none; }
+            .cert-vertical-stack:hover .cert-card-vertical { margin-top: 0 !important; }
+            .cert-card-vertical:hover { 
+                transform: translateY(-5px) scale(1.02) rotate(0); 
+                box-shadow: 0 10px 25px rgba(0, 188, 212, 0.15); 
+                margin-bottom: 15px !important; 
+            }
+            .cert-card-vertical:hover::after { display: none; }
+        }
+		
+		/* --- Layout Esperienza Lavorativa --- */
+		.work-experience-layout {
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+		}
+
+		.featured-card {
+			width: 100%;
+			/* Mantiene lo stile della tua card attuale, ma forza la larghezza intera */
+		}
+
+		.secondary-experiences {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+			gap: 20px;
+		}
+
+		.compact-card {
+			padding: 15px 20px; /* Padding ridotto per le carte con meno testo */
+		}
+		.compact-card h3 { font-size: 1.1rem; }
+		.compact-card p { font-size: 0.9rem; margin-bottom: 0; }
+		
+		/* --- Banner Work in Progress --- */
+        .wip-banner {
+            position: fixed; 
+            top: 90px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            
+            /* Tocco di giallo integrato direttamente nella trasparenza */
+            background-color: rgba(255, 193, 7, 0.12); 
+            
+            padding: 8px 20px; 
+            z-index: 990; 
+            border-radius: 50px; 
+            /* Bordo giallo leggermente più definito */
+            border: 1px solid rgba(255, 193, 7, 0.3); 
+            backdrop-filter: blur(12px); 
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); 
+            
+            color: #ffffff;
+            font-size: 0.85rem; 
+            font-weight: 600; 
+            letter-spacing: 0.5px; 
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 850px) {
+            .wip-banner {
+                top: 75px; 
+                width: 90%;
+                white-space: normal;
+                font-size: 0.75rem;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-indicator"></div>
+        <a href="#home" class="active">Home</a>
+        <a href="#about">Chi Sono</a>
+        <a href="#portfolio">Lavori</a>
+        <a href="#resume">Percorso</a>
+		<a href="#skills">Competenze</a>
+        <a href="#contact">Contatti</a>
+    </nav>
+	
+	<div class="wip-banner">
+        ⚠️ Attenzione: sito in fase di sviluppo. Le informazioni potrebbero essere incomplete.
+    </div>
+
+    <header id="home">
+        <div class="hero-container">
+            <div class="hero-text">
+                <h1 class="reveal">Agliati Lorenzo</h1>
+                <h2 class="reveal" style="transition-delay: 0.1s;">Sviluppatore Software & Drone Videomaker</h2>
+                <p class="reveal" style="transition-delay: 0.2s;">Dalla scrittura di codice avanzato alla cattura di prospettive aeree. Unisco logica informatica e visione creativa.</p>
+                <a href="#portfolio" class="btn reveal" style="transition-delay: 0.3s;">Guarda i miei lavori</a>
+            </div>
+            <div class="hero-visual reveal" style="transition-delay: 0.4s;">
+                <div class="image-backdrop">
+                    <img src="20251211_141345.png" alt="Lorenzo Agliati">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <section id="about">
+            <h2 class="section-title reveal">Chi Sono</h2>
+            
+            <div class="about-container reveal">
+                <div class="about-text">
+                    <p>Sono un professionista con una preparazione orientata all'informatica, che attraversa la laurea triennale fino all'attuale percorso magistrale. Al contempo, ho una profonda passione per il videomaking e la comunicazione visiva. Mi occupo di riprese con drone e video editing, integrando la tecnologia informatica per creare produzioni visive arricchite e all'avanguardia.</p>
+                </div>
+                
+                <div class="about-highlights">
+                    <a href="#insubria-block" class="highlight-item interactive-link">
+                        <span>Traguardo Accademico</span>
+                        <h3>Laurea Triennale in Informatica</h3>
+                    </a>
+                    <a href="#b2-cert" class="highlight-item interactive-link" style="transition-delay: 0.1s;">
+                        <span>Competenza Linguistica</span>
+                        <h3>Livello di Inglese B2</h3>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="portfolio">
+            <h2 class="section-title reveal">I Miei Lavori</h2>
+            <div class="grid">
+                <div class="card reveal">
+                    <h3>Riprese Aeree & Motion Graphics</h3>
+                    <p>Realizzazione di video con drone valorizzando l'architettura degli edifici (es. facendone risplendere il contorno). Integrazione di testi 3D tracciati nell'ambiente per mostrare le strade circostanti e i luoghi d'interesse.</p>
+                </div>
+                <div class="card reveal" style="transition-delay: 0.2s;">
+                    <h3>Tesi: Weather Nowcasting</h3>
+                    <p>Sviluppo di modelli basati su GPT per le previsioni meteorologiche a brevissimo termine (Nowcasting). Un'esplorazione avanzata nel campo dell'Intelligenza Artificiale applicata ai dati atmosferici.</p>
+                </div>
+                <div class="card reveal" style="transition-delay: 0.4s;">
+                    <h3>Progetti di Comunicazione Visiva</h3>
+                    <p>Registrazione e montaggio video professionale con l'utilizzo di Adobe Premiere Pro, curando la cinematografia a livello comunicativo (scelta delle inquadrature, ritmo, narrazione).</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="resume">
+            <h2 class="section-title reveal">La Mia Formazione</h2>
+            
+            <div class="timeline">
+                
+				<div class="timeline-block reveal">
+					<div class="timeline-dot future"></div>
+					<span class="timeline-date-outside">Futuro</span>
+					<div class="timeline-content">
+						<div class="entity-header">
+							<img src="press-usi-immagini-logo.png" alt="Logo USI" class="entity-logo">
+							<div class="entity-info">
+								<h3>Master in Software and Data Engineering</h3>
+								<h4>USI (Svizzera) e Università Milano-Bicocca</h4>
+							</div>
+						</div>
+						<p>Progetto di scambio previsto per il mio 5° anno di laurea magistrale. Ho già superato il colloquio per l'ammissione, con l'obiettivo di ottenere la doppia laurea in Bicocca e all'USI.</p>
+					</div>
+				</div>
+
+				<div class="timeline-block reveal">
+					<div class="timeline-dot current"></div>
+					<span class="timeline-date-outside">Settembre 2025 - Attuale</span>
+					<div class="timeline-content">
+						<div class="entity-header">
+							<img src="Milano-Bicocca_University_logo_2_on_transparent_background.svg.png" alt="Logo Bicocca" class="entity-logo">
+							<div class="entity-info">
+								<h3>Laurea Magistrale in Informatica</h3>
+								<h4>Università degli Studi di Milano-Bicocca</h4>
+							</div>
+						</div>
+						<p>Attualmente iscritto e frequentante il corso di studi magistrale (Classe: LM-18 - Informatica) per approfondire le competenze nello sviluppo software avanzato.</p>
+					</div>
+				</div>
+
+				<div class="timeline-block reveal">
+					<div class="timeline-dot completed"></div>
+					<span class="timeline-date-outside">Settembre 2022 - Dicembre 2025</span>
+					<div class="timeline-content" id="insubria-block">
+						<div class="entity-header">
+							<img src="insubria.jpeg" alt="Logo Insubria" class="entity-logo">
+							<div class="entity-info">
+								<h3>Laurea Triennale in Informatica</h3>
+								<h4>Università degli Studi dell'Insubria</h4>
+							</div>
+						</div>
+						<p>Classe di laurea: L-31 - Scienze e tecnologie informatiche. Data di conseguimento prevista: 11/12/2025.</p>
+						<p style="margin-top: 10px;">Tesi sperimentale intitolata: <em>GPT_Based_Models_for_Weather_Nowcasting</em>.</p>
+						<div class="grade left-aligned">Voto: 98/110</div>
+						<div class="badges-container">
+							<a href="#skill-colab" class="badge-link" data-skill="Google Colab">
+								<img src="Google_Colaboratory_SVG_Logo.svg.png" alt="Google Colab">
+							</a>
+
+							<a href="#skill-github" class="badge-link" data-skill="GitHub">
+								<img src="Octicons-mark-github.svg" alt="GitHub">
+							</a>
+
+							<a href="#skill-android" class="badge-link" data-skill="Android">
+								<img src="Android_Studio_icon_(2023).svg.png" alt="Android">
+							</a>
+						
+							<a href="#skill-sql" class="badge-link" data-skill="SQL">
+								<img src="Postgresql_elephant.svg.png" alt="SQL">
+							</a>
+							
+							<a href="#skill-java" class="badge-link" data-skill="Java">
+								<img src="Java_Logo.svg.png" alt="Java">
+							</a>
+							
+							<a href="#skill-python" class="badge-link" data-skill="Python">
+								<img src="Python-logo-notext.svg.png" alt="Python">
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="timeline-block reveal">
+					<div class="timeline-dot completed"></div>
+					<span class="timeline-date-outside">Settembre 2017 - Giugno 2022</span>
+					<div class="timeline-content" style="position: relative; padding-bottom: 60px;">
+						<div class="entity-header">
+							<img src="itis.png" alt="Logo ITIS" class="entity-logo">
+							<div class="entity-info">
+								<h3>Diploma in Informatica con Potenziamento Comunicazione</h3>
+								<h4>Istituto Tecnico Leonardo Da Vinci (ITIS Carate)</h4>
+							</div>
+						</div>
+						<p>Indirizzo Informatica e Telecomunicazioni. Oltre al normale percorso informatico, ho frequentato un potenziamento sulla comunicazione visiva e cinematografia.</p>
+						
+						<div style="display: flex; flex-direction: column; align-items: flex-start;">
+							
+							<span class="expand-text-btn" onclick="toggleExpand(this)">
+								<span class="text">Leggi di più</span> <span class="arrow">&#9660;</span>
+							</span>
+							
+							<div class="expandable-content">
+								<p style="margin-bottom: 10px;">Partecipando a ore pomeridiane aggiuntive, ho imparato tecniche di cinematografia a livello comunicativo (inquadrature, ritmo, storytelling) e l'utilizzo avanzato di <strong>Adobe Premiere Pro</strong>, curando personalmente la registrazione e l'editing di diversi lavori video.</p>
+								<p style="margin-bottom: 10px;">Sono stato selezionato, assieme a due compagni, per documentare tramite video il progetto di scambio Erasmus a <strong>Vienna (Austria)</strong>. Sfortunatamente l'esperienza si è interrotta dopo soli 5 giorni per via dell'inizio della pandemia Covid.</p>
+								<p>Durante il percorso superiore, ho inoltre raggiunto le finali regionali delle <strong>Olimpiadi dell'Informatica</strong>.</p>
+							</div>
+
+							<div class="grade left-aligned">Voto: 90/100</div>
+						</div>
+
+						<div class="badges-container">
+							<a href="#skill-office" class="badge-link" data-skill="Office 365">
+								<img src="office-2.svg" alt="Office 365">
+							</a>
+							
+							<a href="#skill-AfterEff" class="badge-link" data-skill="After Effects">
+								<img src="Adobe_After_Effects_CC_icon.svg.png" alt="After Effects">
+							</a>
+							
+							<a href="#skill-premiere" class="badge-link" data-skill="Premiere Pro">
+								<img src="Adobe_Premiere_Pro_CC_icon.svg (1).png" alt="Premiere Pro">
+							</a>
+							
+							<a href="#skill-php" class="badge-link" data-skill="PHP">
+								<img src="PHP-logo.svg.png" alt="PHP">
+							</a>
+							
+							<a href="#skill-html" class="badge-link" data-skill="HTML & Web">
+								<img src="HTML5_logo_and_wordmark.svg.png" alt="HTML">
+							</a>
+							
+							<a href="#skill-java" class="badge-link" data-skill="Java">
+								<img src="Java_Logo.svg.png" alt="Java">
+							</a>
+							
+							<a href="#skill-sql" class="badge-link" data-skill="SQL">
+								<img src="Postgresql_elephant.svg.png" alt="SQL">
+							</a>
+							
+							<a href="#skill-c" class="badge-link" data-skill="C">
+								<img src="C_Logo.png" alt="C">
+							</a>
+							
+							<a href="#skill-cpp" class="badge-link" data-skill="C++">
+								<img src="ISO_C++_Logo.svg.png" alt="C++">
+							</a>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+            
+            <h2 class="section-title reveal" style="margin-top: 80px;">Esperienza Lavorativa</h2>
+        
+			<div class="work-experience-layout">
+				
+				<div class="card reveal featured-card" style="position: relative; padding-bottom: 75px;">
+					<div class="entity-header">
+						<img src="lvs-solution-colore-n.png" alt="Logo LVS" class="entity-logo">
+						<div class="entity-info">
+							<h3>Impiegato Tecnico (Stage)</h3>
+							<h4>LVS Solution S.r.l.</h4>
+						</div>
+					</div>
+					<span class="date-badge">Giugno 2021 - Luglio 2021</span>
+					<p>Assistenza all'editing video e allestimento sale per videoconferenze. Programmazione dispositivi Atom M5 Matrix collegati via WiFi al software Tally Arbiter. Gestione service audio/video/luci presso location come Castello Sforzesco, Telelombardia, Novotel e Rosa Grand Milano.</p>
+					
+					<div class="badges-container">
+						<a href="#skill-AfterEff" class="badge-link" data-skill="After Effects">
+							<img src="Adobe_After_Effects_CC_icon.svg.png" alt="After Effects">
+						</a>
+					
+						<a href="#skill-premiere" class="badge-link" data-skill="Premiere Pro">
+							<img src="Adobe_Premiere_Pro_CC_icon.svg (1).png" alt="Premiere Pro">
+						</a>
+					</div>
+				</div>
+
+				<div class="secondary-experiences">
+					
+					<div class="card reveal compact-card" style="transition-delay: 0.1s;">
+						<div class="entity-header">
+							<img src="tlf.png" alt="Logo TapelessFilm" class="entity-logo">
+							<div class="entity-info">
+								<h3>Comparsa Televisiva</h3>
+								<h4>TapelessFilm</h4>
+							</div>
+						</div>
+						<span class="date-badge">Novembre 2021</span>
+						<p>Partecipazione come comparsa alla serie TV per Sky "Blocco 181" a Milano.</p>
+					</div>
+
+					<div class="card reveal compact-card" style="transition-delay: 0.2s;">
+						<div class="entity-header">
+							<img src="303105939_467651878708560_8523833409827929273_n.png" alt="Logo Indiana" class="entity-logo">
+							<div class="entity-info">
+								<h3>Comparsa Televisiva</h3>
+								<h4>Indiana Production</h4>
+							</div>
+						</div>
+						<span class="date-badge">Luglio 2021</span>
+						<p>Partecipazione come comparsa alla serie TV per Rai "Vostro onore" a Milano.</p>
+					</div>
+
+				</div>
+			</div>
+        </section>
+
+		<section id="skills">
+			<h2 class="section-title reveal">Le Mie Competenze</h2>
+					
+			<div class="skills-cert-container reveal">
+						
+				<div class="skills-column">
+					<h3>Hard Skills</h3>
+					<div class="skills-grid">
+								
+						<div class="skill-card" id="skill-cpp">
+							<img src="ISO_C++_Logo.svg.png" alt="C++" class="skill-logo"> 
+							<div class="skill-name">C++</div>
+							<div class="skill-details">
+								<h4>Sviluppo Software</h4>
+								<p>Utilizzato in diversi progetti strutturali accademici.</p>
+							</div>
+						</div>
+
+						<div class="skill-card" id="skill-c">
+							<img src="C_Logo.png" alt="C" class="skill-logo"> 
+							<div class="skill-name">C</div>
+							<div class="skill-details">
+								<h4>Programmazione</h4>
+								<p>Sviluppo di algoritmi e gestione di sistema a basso livello.</p>
+							</div>
+						</div>
+
+						<div class="skill-card" id="skill-sql">
+							<img src="Postgresql_elephant.svg.png" alt="SQL" class="skill-logo"> 
+							<div class="skill-name">SQL</div>
+							<div class="skill-details">
+								<h4>Database</h4>
+								<p>Progettazione e interrogazione di database relazionali.</p>
+							</div>
+						</div>
+
+						<div class="skill-card" id="skill-java">
+							<img src="Java_Logo.svg.png" alt="Java" class="skill-logo"> 
+							<div class="skill-name">Java</div>
+							<div class="skill-details">
+								<h4>Sviluppo Software</h4>
+								<p>Programmazione orientata agli oggetti e design pattern.</p>
+							</div>
+						</div>
+
+						<div class="skill-card" id="skill-html">
+							<img src="HTML5_logo_and_wordmark.svg.png" alt="HTML" class="skill-logo"> 
+							<div class="skill-name">HTML & Web</div>
+							<div class="skill-details">
+								<h4>Frontend</h4>
+								<p>Strutturazione e creazione di interfacce web responsive.</p>
+							</div>
+						</div>
+
+						<div class="skill-card" id="skill-python">
+							<img src="Python-logo-notext.svg.png" alt="Python" class="skill-logo"> 
+							<div class="skill-name">Python</div>
+							<div class="skill-details">
+								<h4>Sviluppo & AI</h4>
+								<p>Utilizzato per modelli AI, script e data science.</p>
+							</div>
+						</div>
+
+						<div class="skill-card" id="skill-php">
+							<img src="PHP-logo.svg.png" alt="PHP" class="skill-logo"> 
+							<div class="skill-name">PHP</div>
+							<div class="skill-details">
+								<h4>Backend Web</h4>
+								<p>Sviluppo lato server per applicazioni web dinamiche.</p>
+							</div>
+						</div>
+
+						<div class="skill-card" id="skill-premiere">
+							<img src="Adobe_Premiere_Pro_CC_icon.svg (1).png" alt="Premiere Pro" class="skill-logo">
+							<div class="skill-name">Premiere Pro</div>
+							<div class="skill-details">
+								<h4>Video Editing</h4>
+								<p>Perfezionato nei miei lavori di videomaking e droni.</p>
+							</div>
+						</div>
+
+						<div class="skill-card" id="skill-AfterEff">
+							<img src="Adobe_After_Effects_CC_icon.svg.png" alt="After Effects" class="skill-logo">
+							<div class="skill-name">After Effects</div>
+							<div class="skill-details">
+								<h4>Motion Graphics</h4>
+								<p>Compositing avanzato, tracciamento e animazioni.</p>
+							</div>
+						</div>
+
+						<div class="skill-card" id="skill-office">
+							<img src="office-2.svg" alt="Office 365" class="skill-logo">
+							<div class="skill-name">Office 365</div>
+							<div class="skill-details">
+								<h4>Produttività</h4>
+								<p>Gestione documentale, fogli di calcolo e presentazioni.</p>
+							</div>
+						</div>
+						
+						<div class="skill-card" id="skill-colab">
+							<img src="Google_Colaboratory_SVG_Logo.svg.png" alt="Google Colab" class="skill-logo">
+							<div class="skill-name">Google Colab</div>
+							<div class="skill-details">
+								<h4>Python & Data Science</h4>
+								<p>Sviluppo ed esecuzione di notebook Python in cloud e analisi dati.</p>
+							</div>
+						</div>
+
+						<div class="skill-card" id="skill-github">
+							<img src="Octicons-mark-github.svg" alt="GitHub" class="skill-logo">
+							<div class="skill-name">GitHub</div>
+							<div class="skill-details">
+								<h4>Version Control</h4>
+								<p>Gestione del codice sorgente, versionamento e collaborazione in team.</p>
+							</div>
+						</div>
+
+						<div class="skill-card" id="skill-android">
+							<img src="Android_Studio_icon_(2023).svg.png" alt="Android" class="skill-logo">
+							<div class="skill-name">Android</div>
+							<div class="skill-details">
+								<h4>Sviluppo Mobile</h4>
+								<p>Progettazione e sviluppo di applicazioni native per dispositivi mobili.</p>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+                <div class="cert-column">
+                    <h3>Certificazioni</h3>
+                    <div class="cert-vertical-stack">
+                        
+                        <div class="cert-card-vertical" id="b2-cert">
+                            <div class="entity-header">
+                                <img src="Cambridge_University_Crest_-_flat.png" alt="Cambridge" class="entity-logo">
+                                <div class="entity-info">
+                                    <h3 style="font-size:1.1rem; color:#fff;">First Certificate English B2</h3>
+                                </div>
+                            </div>
+                            <span class="date-badge" style="width: fit-content;">Mag 2021</span>
+                            <p style="font-size:0.9rem; color:#ccc;">Cambridge University Press & Assessment.</p>
+                        </div>
+
+                        <div class="cert-card-vertical">
+                            <div class="entity-header">
+                                <img src="EASA-Easyaccessrulesfordrones.jpg" alt="EASA" class="entity-logo">
+                                <div class="entity-info">
+                                    <h3 style="font-size:1.1rem; color:#fff;">UAS Remote Pilot A1+A3</h3>
+                                </div>
+                            </div>
+                            <span class="date-badge" style="width: fit-content;">Apr 2022 - Apr 2027</span>
+                            <p style="font-size:0.9rem; color:#ccc;">EASA - European Union Aviation Safety Agency.</p>
+                        </div>
+
+                        <div class="cert-card-vertical">
+                            <div class="entity-header">
+                                <img src="logo_quadrato_Accademia_Domani.png" alt="Adobe" class="entity-logo">
+                                <div class="entity-info">
+                                    <h3 style="font-size:1.1rem; color:#fff;">Adobe Premiere Pro</h3>
+                                </div>
+                            </div>
+                            <span class="date-badge" style="width: fit-content;">Mar 2021</span>
+                            <p style="font-size:0.9rem; color:#ccc;">Certificato Ufficiale Accademia Domani.</p>
+                        </div>
+
+                        <div class="cert-card-vertical">
+                            <div class="entity-header">
+                                <img src="Logo-AREU_cmyk_Big.png" alt="AREU" class="entity-logo">
+                                <div class="entity-info">
+                                    <h3 style="font-size:1.1rem; color:#fff;">BLSD Defibrillazione</h3>
+                                </div>
+                            </div>
+                            <span class="date-badge" style="width: fit-content;">Feb 2022</span>
+                            <p style="font-size:0.9rem; color:#ccc;">AREU Lombardia. Rianimazione cardio polmonare e defibrillatore semiautomatico.</p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+		</section>
+
+        <section id="contact" style="border-bottom: none; text-align: center;">
+            <h2 class="section-title reveal" style="border-left: none; padding-left: 0;">Contatti</h2>
+            <p class="reveal" style="font-size: 1.2rem; margin-bottom: 20px;">Sei interessato a collaborare per un progetto informatico o una produzione video?</p>
+            <a href="https://www.linkedin.com/in/lorenzo-agliati-32a254252/" target="_blank" class="btn reveal">Connettiti con me su LinkedIn</a>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Agliati Lorenzo. Tutti i diritti riservati.</p>
+    </footer>
+
+    <script>
+        const navLinks = document.querySelectorAll('nav a');
+        const indicator = document.querySelector('.nav-indicator');
+        const sections = document.querySelectorAll('section, header');
+        
+        let stretchTimeout;
+        let scrollLockTimeout;
+        let isClickScrolling = false;
+        let currentIndicatorTarget = null; 
+
+        // --- Setup Iniziale ---
+        window.addEventListener('load', () => {
+            const activeLink = document.querySelector('nav a.active') || navLinks[0];
+            currentIndicatorTarget = activeLink;
+            indicator.style.transition = 'none';
+            indicator.style.left = `${activeLink.offsetLeft}px`;
+            indicator.style.width = `${activeLink.offsetWidth}px`;
+            indicator.style.height = `${activeLink.offsetHeight}px`;
+            indicator.style.top = `${activeLink.offsetTop}px`;
+        });
+
+        // --- Animazione Bolla Elastica ---
+        function animateIndicator(targetEl) {
+            if (!targetEl || currentIndicatorTarget === targetEl) return;
+            currentIndicatorTarget = targetEl;
+
+            const targetLeft = targetEl.offsetLeft;
+            const targetWidth = targetEl.offsetWidth;
+            const currentLeft = parseFloat(indicator.style.left) || targetLeft;
+            const currentWidth = parseFloat(indicator.style.width) || targetWidth;
+
+            const isMovingRight = targetLeft > currentLeft;
+            
+            indicator.style.transition = 'width 0.2s ease-in, left 0.2s ease-in';
+            if (isMovingRight) {
+                indicator.style.width = `${(targetLeft + targetWidth) - currentLeft}px`;
+            } else {
+                indicator.style.left = `${targetLeft}px`;
+                indicator.style.width = `${(currentLeft + currentWidth) - targetLeft}px`;
+            }
+
+            clearTimeout(stretchTimeout);
+            
+            stretchTimeout = setTimeout(() => {
+                if (currentIndicatorTarget === targetEl) {
+                    indicator.style.transition = 'width 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), left 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    indicator.style.left = `${targetLeft}px`;
+                    indicator.style.width = `${targetWidth}px`;
+                }
+            }, 180);
+        }
+
+        // --- Click sui Link Navbar ---
+        navLinks.forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                isClickScrolling = true; 
+
+                navLinks.forEach(link => link.classList.remove('active'));
+                this.classList.add('active');
+                animateIndicator(this);
+
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80, 
+                    behavior: 'smooth'
+                });
+
+                // Fallback di sicurezza
+                clearTimeout(scrollLockTimeout);
+                scrollLockTimeout = setTimeout(() => { isClickScrolling = false; }, 1200);
+            });
+        });
+
+        // --- Click sugli Highlights di "Chi Sono" ---
+        document.querySelectorAll('.interactive-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                isClickScrolling = true;
+                
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+
+                if (targetElement) {
+                    const elementRect = targetElement.getBoundingClientRect();
+                    const absoluteElementTop = elementRect.top + window.pageYOffset;
+                    const middlePos = absoluteElementTop - (window.innerHeight / 2) + (elementRect.height / 2);
+
+                    window.scrollTo({
+                        top: middlePos,
+                        behavior: 'smooth'
+                    });
+
+                    targetElement.classList.remove('glow-effect');
+                    void targetElement.offsetWidth;
+                    targetElement.classList.add('glow-effect');
+
+                    setTimeout(() => {
+                        targetElement.classList.remove('glow-effect');
+                    }, 2000);
+                }
+
+                clearTimeout(scrollLockTimeout);
+                scrollLockTimeout = setTimeout(() => { isClickScrolling = false; }, 1200);
+            });
+        });
+		
+		// --- Click sui Badge Competenze (Cerchietti) ---
+        document.querySelectorAll('.badge-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault(); // Blocca lo scroll nativo istantaneo del browser
+                isClickScrolling = true;
+                
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+
+                if (targetElement) {
+                    const elementRect = targetElement.getBoundingClientRect();
+                    const absoluteElementTop = elementRect.top + window.pageYOffset;
+                    
+                    // Calcola la posizione per centrare la card nello schermo
+                    const middlePos = absoluteElementTop - (window.innerHeight / 2) + (elementRect.height / 2);
+
+                    window.scrollTo({
+                        top: middlePos,
+                        behavior: 'smooth'
+                    });
+
+                    // Effetto glow opzionale per far capire quale skill è stata puntata
+                    targetElement.classList.remove('glow-effect');
+                    void targetElement.offsetWidth; // Trigger reflow per riavviare l'animazione
+                    targetElement.classList.add('glow-effect');
+
+                    setTimeout(() => {
+                        targetElement.classList.remove('glow-effect');
+                    }, 2000);
+                }
+
+                clearTimeout(scrollLockTimeout);
+                scrollLockTimeout = setTimeout(() => { isClickScrolling = false; }, 1200);
+            });
+        });
+
+        // --- Scroll Spy Intelligente Anti-Rimbalzo ---
+        window.addEventListener('scroll', () => {
+            if (isClickScrolling) {
+                clearTimeout(scrollLockTimeout);
+                scrollLockTimeout = setTimeout(() => { isClickScrolling = false; }, 150);
+                return; 
+            }
+            
+            let currentSectionId = '';
+            
+            if ((window.innerHeight + Math.round(window.scrollY)) >= document.body.offsetHeight - 50) {
+                currentSectionId = 'contact';
+            } else {
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (window.scrollY >= (sectionTop - 250)) {
+                        currentSectionId = section.getAttribute('id');
+                    }
+                });
+            }
+
+            if (currentSectionId) {
+                const activeLink = document.querySelector(`nav a[href="#${currentSectionId}"]`);
+                if (activeLink && !activeLink.classList.contains('active')) {
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    activeLink.classList.add('active');
+                    animateIndicator(activeLink);
+                }
+            }
+        });
+
+        // --- Animazioni di comparizione ---
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+		
+		// --- Funzione per il testo Espandi/Riduci con freccia ---
+		function toggleExpand(btn) {
+			const content = btn.nextElementSibling;
+			const textSpan = btn.querySelector('.text');
+			
+			btn.classList.toggle('active');
+			
+			if (content.classList.contains('expanded')) {
+				content.classList.remove('expanded');
+				textSpan.textContent = 'Leggi di più';
+			} else {
+				content.classList.add('expanded');
+				textSpan.textContent = 'Riduci';
+			}
+		}
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    </script>
+</body>
+</html>
