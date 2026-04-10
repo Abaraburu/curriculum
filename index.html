@@ -215,11 +215,38 @@
 			/* 2. Immagine Pop-Out fluida */
 			.hero-visual { min-width: 0; width: 100%; }
 			.image-backdrop { width: 100%; max-width: 300px; height: 350px; }
+
+			/* 1. Navbar più compatta su mobile */
+			nav { 
+				width: 95%; 
+				padding: 8px 5px; 
+				gap: 2px; /* Riduciamo drasticamente lo spazio tra i bottoni */
+				overflow-x: auto; /* Mantiene lo scorrimento se lo schermo è davvero minuscolo... */
+				-ms-overflow-style: none; /* ...ma nasconde la barra su Edge/IE */
+				scrollbar-width: none; /* ...e la nasconde su Firefox */
+			}
 			
-			/* 3. Navigazione e Chi Sono */
-			nav { width: 95%; overflow-x: auto; justify-content: flex-start; padding: 10px; }
-			.about-container { flex-direction: column; gap: 30px; text-align: center; }
-			.about-highlights { padding-left: 0; border-left: none; border-top: 1px solid #333; padding-top: 30px; }
+			/* Nasconde la barra di scorrimento su Chrome/Safari/iOS per un look più pulito */
+			nav::-webkit-scrollbar { 
+				display: none; 
+			}
+			
+			nav a { 
+				padding: 6px 8px; /* Spazio interno dei bottoni ridotto */
+				font-size: 0.7rem; /* Testo più piccolo */
+				letter-spacing: 0; /* Rimuoviamo la spaziatura tra le lettere per salvare spazio */
+				white-space: nowrap; /* Impedisce alle singole parole di andare a capo spezzando il bottone */
+			}
+
+			/* 2. Banner di attenzione (WIP) riposizionato */
+			.wip-banner {
+				top: 80px; /* Lo abbassiamo leggermente per distanziarlo dalla navbar */
+				width: 92%;
+				white-space: normal; /* Permette al testo di andare a capo comodamente */
+				font-size: 0.75rem;
+				padding: 10px 15px;
+				line-height: 1.4; /* Migliora la leggibilità su più righe */
+			}
 
 			/* 4. Fix sovrapposizione Badge Competenze */
 			.badges-container {
@@ -675,7 +702,7 @@
 							</div>
 						</div>
 						<p>Classe di laurea: L-31 - Scienze e tecnologie informatiche. Data di conseguimento prevista: 11/12/2025.</p>
-						<p style="margin-top: 10px;">Tesi sperimentale intitolata: <em>GPT_Based_Models_for_Weather_Nowcasting</em>.</p>
+						<p style="margin-top: 10px;">Tesi sperimentale intitolata: <em>GPT Based Models for Weather Nowcasting</em>.</p>
 						<div class="grade left-aligned">Voto: 98/110</div>
 						<div class="badges-container">
 							<a href="#skill-colab" class="badge-link" data-skill="Google Colab">
