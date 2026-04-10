@@ -204,15 +204,40 @@
         footer { text-align: center; padding: 30px; background-color: #0a0a0a; border-top: 1px solid #333; }
 
         /* Responsive Mobile Base */
-        @media (max-width: 850px) {
-            .hero-container { flex-direction: column-reverse; text-align: center; padding-top: 50px; }
-            .hero-text { padding-right: 0; }
-            .hero-text p { margin: 0 auto 30px; }
-            .image-backdrop { width: 300px; height: 380px; }
-            nav { width: 95%; overflow-x: auto; justify-content: flex-start; padding: 10px; }
-            .about-container { flex-direction: column; gap: 30px; text-align: center; }
-            .about-highlights { padding-left: 0; border-left: none; border-top: 1px solid #333; padding-top: 30px; }
-        }
+		@media (max-width: 850px) {
+			/* 1. Hero Section e Testi */
+			.hero-container { flex-direction: column-reverse; text-align: center; padding-top: 50px; }
+			.hero-text { padding-right: 0; min-width: 0; width: 100%; } /* Tolto il min-width rigido */
+			.hero-text h1 { font-size: 2.8rem; } /* Rimpicciolito il nome */
+			.hero-text h2 { font-size: 1.5rem; } /* Rimpicciolito il sottotitolo */
+			.hero-text p { margin: 0 auto 30px; }
+			
+			/* 2. Immagine Pop-Out fluida */
+			.hero-visual { min-width: 0; width: 100%; }
+			.image-backdrop { width: 100%; max-width: 300px; height: 350px; }
+			
+			/* 3. Navigazione e Chi Sono */
+			nav { width: 95%; overflow-x: auto; justify-content: flex-start; padding: 10px; }
+			.about-container { flex-direction: column; gap: 30px; text-align: center; }
+			.about-highlights { padding-left: 0; border-left: none; border-top: 1px solid #333; padding-top: 30px; }
+
+			/* 4. Fix sovrapposizione Badge Competenze */
+			.badges-container {
+				position: relative; /* Toglie l'assoluto che causava sovrapposizioni */
+				bottom: 0;
+				right: 0;
+				margin-top: 30px;
+				justify-content: center; /* Li centra orizzontalmente su mobile */
+			}
+			.badges-container::before {
+				bottom: -25px; /* Aggiusta la scritta "Competenze" sotto i badge */
+			}
+
+			/* 5. Compattiamo la Timeline per recuperare spazio laterale */
+			.timeline-block { padding-left: 35px; }
+			.timeline::before { left: 10px; }
+			.timeline-dot { left: 10px; width: 16px; height: 16px; }
+		}
 		
 		/* --- Testo Espandi (Leggi di più) --- */
 		.expand-text-btn {
@@ -551,7 +576,7 @@
             <div class="hero-text">
                 <h1 class="reveal">Agliati Lorenzo</h1>
                 <h2 class="reveal" style="transition-delay: 0.1s;">Sviluppatore Software & Videomaker</h2>
-                <p class="reveal" style="transition-delay: 0.2s;">Dalla scrittura di codice  alla cattura di prospettive terrestri e aeree. Logica e precisione informatica e visione creativa.</p>
+                <p class="reveal" style="transition-delay: 0.2s;">Dalla scrittura di codice  alla cattura di video terrestri e aerei. Logica informatica e visione creativa.</p>
                 <a href="#portfolio" class="btn reveal" style="transition-delay: 0.3s;">Guarda i miei lavori</a>
             </div>
             <div class="hero-visual reveal" style="transition-delay: 0.4s;">
@@ -569,7 +594,7 @@
             
             <div class="about-container reveal">
                 <div class="about-text">
-                    <p>Sono un professionista con una preparazione orientata all'informatica, che attraversa la laurea triennale fino all'attuale percorso magistrale. Al contempo, ho una profonda passione per il videomaking e la comunicazione visiva. Mi occupo di riprese con drone e video editing, integrando la tecnologia informatica per creare produzioni visive arricchite e all'avanguardia.</p>
+                    <p>Sono un professionista con una preparazione orientata all'informatica, che attraversa la laurea triennale fino all'attuale percorso magistrale. Al contempo, ho una profonda passione per il videomaking e la dronistica. Ho lavorato in diversi scenari sempre creando produzioni visive all'avanguardia.</p>
                 </div>
                 
                 <div class="about-highlights">
@@ -590,7 +615,7 @@
             <div class="grid">
                 <div class="card reveal">
                     <h3>Riprese Aeree & Motion Graphics</h3>
-                    <p>Realizzazione di video con drone valorizzando l'architettura degli edifici (es. facendone risplendere il contorno). Integrazione di testi 3D tracciati nell'ambiente per mostrare le strade circostanti e i luoghi d'interesse.</p>
+                    <p>Realizzazione di video con drone valorizzando l'architettura degli edifici e la location (sia paesaggi naturalistici che luoghi di interesse). Integrazione di testi 3D tracciati nell'ambiente per mostrare le strade circostanti e i luoghi d'interesse.</p>
                 </div>
                 <div class="card reveal" style="transition-delay: 0.2s;">
                     <h3>Tesi: Weather Nowcasting</h3>
@@ -619,7 +644,7 @@
 								<h4>USI (Svizzera) e Università Milano-Bicocca</h4>
 							</div>
 						</div>
-						<p>Progetto di scambio previsto per il mio 5° anno di laurea magistrale. Ho già superato il colloquio per l'ammissione, con l'obiettivo di ottenere la doppia laurea in Bicocca e all'USI.</p>
+						<p>Progetto di scambio previsto per il mio 5° anno di laurea magistrale. Ho già superato il colloquio per l'ammissione, con l'obiettivo di ottenere la doppia laurea in Bicocca e all'USI in Svizzera.</p>
 					</div>
 				</div>
 
